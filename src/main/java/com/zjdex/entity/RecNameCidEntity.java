@@ -3,12 +3,14 @@ package com.zjdex.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by matrix_stone on 2017/1/11.
  */
 @Entity
-public class RecNameCid {
+@Table(name="rec_name_cid")
+public class RecNameCidEntity {
 
     @Id
     @GeneratedValue

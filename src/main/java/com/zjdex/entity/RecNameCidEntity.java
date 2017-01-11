@@ -10,25 +10,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="rec_name_cid")
-public class RecNameCidEntity {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class RecNameCidEntity extends BaseEntity{
 
     private String name;
 
     private String cid;
 
     private String respCode;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

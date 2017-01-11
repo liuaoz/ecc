@@ -9,8 +9,7 @@ import javax.persistence.Table;
  * Created by matrix_stone on 2017/1/11.
  */
 @Entity
-@Table(name="rec_name_cid")
-public class RecNameCidEntity extends BaseEntity{
+public class RecNameCid extends BaseEntity{
 
     private String name;
 

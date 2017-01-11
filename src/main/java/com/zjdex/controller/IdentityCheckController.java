@@ -1,6 +1,6 @@
 package com.zjdex.controller;
 
-import com.zjdex.entity.RecNameCidEntity;
+import com.zjdex.entity.RecNameCid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +18,7 @@ public class IdentityCheckController {
     IdentityCheckRepository identityCheckRepository;
 
     @PostMapping("/check")
-    public RecNameCidEntity check(@RequestBody RecNameCidEntity entity) {
+    public RecNameCid check(@RequestBody RecNameCid entity) {
         return identityCheckRepository.save(entity);
     }
 }

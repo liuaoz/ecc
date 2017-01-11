@@ -1,0 +1,12 @@
+server:
+  port: 8080
+  context-path: /ecc
+
+spring:
+  profiles:
+    active: prd
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+

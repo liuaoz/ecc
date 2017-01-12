@@ -11,8 +11,6 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.framework.core.init.FwProperties;
-
 /**
  * Description: This class is for managing resource info.
  * 
@@ -23,7 +21,7 @@ public class Message {
 
     private static final Logger LOG = LoggerFactory.getLogger(Message.class);
 
-    private static final Locale locale = new FwProperties().getLocale();
+    private static final Locale locale = Locale.getDefault();
 
     /** 资源配置文件放置在src/main/resources/locale/messages_zh_CN.properties */
     private static final String DEAULT_RESOURCE_FILE = "locale.messages";

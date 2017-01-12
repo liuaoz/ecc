@@ -15,7 +15,27 @@ public class RecNameCid extends BaseEntity{
 
     private String cid;
 
-    private String respCode;
+    private String status;
+
+    private String resCode;
+
+    private String resMsg;
+
+    public RecNameCid() {
+    }
+
+    public RecNameCid(String name, String cid) {
+        this.name = name;
+        this.cid = cid;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getName() {
         return name;
@@ -33,11 +53,19 @@ public class RecNameCid extends BaseEntity{
         this.cid = cid;
     }
 
-    public String getRespCode() {
-        return respCode;
+    public String getResCode() {
+        return resCode;
     }
 
-    public void setRespCode(String respCode) {
-        this.respCode = respCode;
+    public void setResCode(String resCode) {
+        this.resCode = resCode;
+    }
+
+    public String getResMsg() {
+        return resMsg;
+    }
+
+    public void setResMsg(String resMsg) {
+        this.resMsg = resMsg;
     }
 }

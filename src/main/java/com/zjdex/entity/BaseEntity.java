@@ -1,5 +1,8 @@
 package com.zjdex.entity;
 
+import com.zjdex.core.constant.ConstantDB;
+
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -15,13 +18,17 @@ public abstract class BaseEntity {
     @GeneratedValue
     public Long id;
 
-    public Date createTime;
-
-    public Date updateTime;
-
+    @Column(length = ConstantDB.LENGTH_NAME)
     public String creator;
 
+    @Column(length = ConstantDB.LENGTH_NAME)
     public String operator;
+
+    @Column(name = "create_time", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
+    public Date createTime;
+
+    @Column(name = "update_time", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP", insertable = false, updatable = false)
+    public Date updateTime;
 
     public Date getCreateTime() {
         return createTime;

@@ -4,3 +4,7 @@ spring:
     url: jdbc:mysql://192.168.1.58:3306/test?useUnicode=true&characterEncoding=utf-8
     username: root
     password: 111111
+
+sjt:
+  url: http://apidatatest.datatang.com/data/credit/
+  apikey: c8d7ac55b22faa229a7fb9243b017f31

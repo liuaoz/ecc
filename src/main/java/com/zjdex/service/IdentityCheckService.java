@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Created by matrix_stone on 2017/1/12.
@@ -27,14 +28,18 @@ public class IdentityCheckService {
     IdentityCheckRepository identityCheckRepository;
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     UserOutInterfaceRepository userOutInterfaceRepository;
-
     @Autowired
     OutInterfaceRepository outInterfaceRepository;
     @Autowired
     OutputRepository outputRepository;
+    @Autowired
+    RelationOutInInterfaceRepository relationOutInInterfaceRepository;
+    @Autowired
+    SupplierInterfaceRepository supplierInterfaceRepository;
+    @Autowired
+    InputRepository inputRepository;
 
 
     public RecSjtNameCid trade(Long userId, String outInterfaceNo, RecSjtNameCid rec) {
@@ -61,6 +66,8 @@ public class IdentityCheckService {
         recNameCid = identityCheckRepository.findByNameAndCid(rec.getName(), rec.getCid());
 
         if (null != recNameCid) {
+            //扣款
+            user.setAmount(user.getAmount().subtract(userOutInterface.getPrice()));
             //记录下游请求日志
             OutputLog outlog = new OutputLog();
             outlog.setUserId(userId);
@@ -72,12 +79,28 @@ public class IdentityCheckService {
             outputRepository.save(outlog);
             return recNameCid;
         } else {
-            String respContent = getData(rec);
+            String respContent = null;
+            //查询数据源接口
+            List<RelationOutInInterface> interfacesList = relationOutInInterfaceRepository.findByOutIdOrderByOrderNum(outInterface.getId());
+            for (RelationOutInInterface relation : interfacesList) {
+                SupplierInterface inInterface = supplierInterfaceRepository.findOne(relation.getInId());
+                //按数据源优先顺序调用接口
+                //TODO
+                respContent = getData(rec);
+                //记录上游请求日志
+                InputLog inlog = new InputLog();
+                inlog.setUserId(userId);
+                inlog.setAmount(inInterface.getPrice());
+                inlog.setResponse(respContent);
+                inlog.setInInterfaceId(inInterface.getId());
+                inputRepository.save(inlog);
+            }
+
+
             recNameCid = parseData(respContent);
             identityCheckRepository.save(recNameCid);
 
             //扣款
-//            user.setAmount(user.getAmount() - userOutInterface.getPrice());
             user.setAmount(user.getAmount().subtract(userOutInterface.getPrice()));
             userRepository.save(user);
         }

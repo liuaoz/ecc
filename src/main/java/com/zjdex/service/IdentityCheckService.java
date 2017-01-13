@@ -4,7 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.zjdex.core.utils.HttpUtil;
 import com.zjdex.core.utils.shujt.DesEncrypter;
 import com.zjdex.dao.IdentityCheckRepository;
+import com.zjdex.dao.OutInterfaceRepository;
+import com.zjdex.dao.UserOutInterfaceRepository;
+import com.zjdex.dao.UserRepository;
+import com.zjdex.entity.OutInterface;
 import com.zjdex.entity.RecNameCid;
+import com.zjdex.entity.User;
+import com.zjdex.entity.UserOutInterface;
+import org.hibernate.criterion.Example;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,9 +31,37 @@ public class IdentityCheckService {
 
     @Autowired
     IdentityCheckRepository identityCheckRepository;
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserOutInterfaceRepository userOutInterfaceRepository;
+
+    @Autowired
+    OutInterfaceRepository outInterfaceRepository;
 
 
-    public RecNameCid trade(Long userId, RecNameCid rec) {
+
+    public RecNameCid trade(Long userId, String outInterfaceNo, RecNameCid rec) {
+
+        //判断余额是否足够
+        User user = userRepository.findOne(userId);
+
+        OutInterface outInterface = outInterfaceRepository.findByOutInterfaceNo(outInterfaceNo);
+        if (null == outInterface) {
+            throw new RuntimeException("此接口不存在");
+        }
+
+        UserOutInterface userOutInterface =
+            userOutInterfaceRepository.findByUserIdAndOutInterfaceId(userId, outInterface.getInInterfaceId());
+        if (null == userOutInterface) {
+            throw new RuntimeException("没有调用此接口的权限");
+        }
+
+        if (user.getAmount() - userOutInterface.getPrice() < 0) {
+            throw new RuntimeException("余额不足");
+        }
+
         RecNameCid recNameCid;
         recNameCid = identityCheckRepository.findByNameAndCid(rec.getName(), rec.getCid());
 
@@ -36,6 +71,10 @@ public class IdentityCheckService {
             String respContent = getData(rec);
             recNameCid = parseData(respContent);
             identityCheckRepository.save(recNameCid);
+
+            //扣款
+            user.setAmount(user.getAmount() - userOutInterface.getPrice());
+            userRepository.save(user);
         }
         return recNameCid;
     }

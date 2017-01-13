@@ -23,18 +23,18 @@ public class IdentityCheckController {
     @Value("${sjt.url}")
     private static String url;
 
-
-    @Autowired
-    IdentityCheckRepository identityCheckRepository;
     @Autowired
     private IdentityCheckService identityCheckService;
 
     @PostMapping("/check")
-    public String check(@RequestBody RecNameCid entity) {
-        System.out.println("--apikey-->" + apikey);
-        System.out.println("--url-->" + url);
+    public String check(String name,String cid,String outInterfaceNo) {
+
         Long userId = 1L;
-        RecNameCid result = identityCheckService.trade(userId, entity);
+        RecNameCid param = new RecNameCid();
+
+        param.setName(name);
+        param.setCid(cid);
+        RecNameCid result = identityCheckService.trade(userId,outInterfaceNo, param);
 
         String rest = JSON.toJSONString(result);
         String en = null;

@@ -1,10 +1,11 @@
 package com.zjdex.entity;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 /**
  * 数据源供应商接口信息
- * 
+ *
  * @author LIUAOZ
  * @version 1.0
  */
@@ -19,7 +20,7 @@ public class SupplierInterface extends BaseEntity {
 
     private String chargeMode;
 
-    private double price;
+    private BigDecimal price;
 
     private String status;
 
@@ -55,11 +56,11 @@ public class SupplierInterface extends BaseEntity {
         this.chargeMode = chargeMode;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

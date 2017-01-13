@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OutInterfaceRepository extends JpaRepository<OutInterface,Long> {
 
-    public OutInterface findByOutInterfaceNo(String outInterfaceNo);
+    public OutInterface findByInterfaceNo(String interfaceNo);
 }

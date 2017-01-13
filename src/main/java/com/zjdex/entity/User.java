@@ -1,6 +1,7 @@
 package com.zjdex.entity;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 /**
  * Created by matrix_stone on 2017/1/11.
@@ -22,7 +23,7 @@ public class User extends BaseEntity {
 
     private String address;
 
-    private double amount;
+    private BigDecimal amount;
 
     public String getUserCode() {
         return userCode;
@@ -80,11 +81,11 @@ public class User extends BaseEntity {
         this.address = address;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }

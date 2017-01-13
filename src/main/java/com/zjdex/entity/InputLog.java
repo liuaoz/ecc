@@ -1,12 +1,13 @@
 package com.zjdex.entity;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 /**
  * Created by matrix_stone on 2017/1/11.
  */
 @Entity
-public class InputLog extends BaseEntity{
+public class InputLog extends BaseEntity {
 
     private long inInterfaceId;
 
@@ -16,7 +17,7 @@ public class InputLog extends BaseEntity{
 
     private String response;
 
-    private double amount;
+    private BigDecimal amount;
 
     public long getInInterfaceId() {
         return inInterfaceId;
@@ -50,11 +51,11 @@ public class InputLog extends BaseEntity{
         this.response = response;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }

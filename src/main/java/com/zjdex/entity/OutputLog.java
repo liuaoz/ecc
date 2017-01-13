@@ -1,12 +1,13 @@
 package com.zjdex.entity;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 /**
  * Created by matrix_stone on 2017/1/11.
  */
 @Entity
-public class OutputLog extends BaseEntity{
+public class OutputLog extends BaseEntity {
 
     private long userId;
 
@@ -16,7 +17,7 @@ public class OutputLog extends BaseEntity{
 
     private String isFree;
 
-    private double price;
+    private BigDecimal price;
 
     private String respCode;
 
@@ -52,11 +53,11 @@ public class OutputLog extends BaseEntity{
         this.isFree = isFree;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

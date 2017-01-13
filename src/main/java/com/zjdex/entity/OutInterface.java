@@ -1,40 +1,51 @@
 package com.zjdex.entity;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 /**
  * Created by matrix_stone on 2017/1/13.
  */
 @Entity
-public class OutInterface extends BaseEntity{
+public class OutInterface extends BaseEntity {
 
-    private String outInterfaceNo;
+    private String interfaceNo;
 
-    private Long inInterfaceId;
+    private String interfaceName;
 
-    private Integer orderNumber;
+    private String status;
 
-    public String getOutInterfaceNo() {
-        return outInterfaceNo;
+    private BigDecimal price;
+
+    public String getInterfaceNo() {
+        return interfaceNo;
     }
 
-    public void setOutInterfaceNo(String outInterfaceNo) {
-        this.outInterfaceNo = outInterfaceNo;
+    public void setInterfaceNo(String interfaceNo) {
+        this.interfaceNo = interfaceNo;
     }
 
-    public Long getInInterfaceId() {
-        return inInterfaceId;
+    public String getInterfaceName() {
+        return interfaceName;
     }
 
-    public void setInInterfaceId(Long inInterfaceId) {
-        this.inInterfaceId = inInterfaceId;
+    public void setInterfaceName(String interfaceName) {
+        this.interfaceName = interfaceName;
     }
 
-    public Integer getOrderNumber() {
-        return orderNumber;
+    public String getStatus() {
+        return status;
     }
 
-    public void setOrderNumber(Integer orderNumber) {
-        this.orderNumber = orderNumber;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

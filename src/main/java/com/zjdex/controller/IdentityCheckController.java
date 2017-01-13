@@ -2,13 +2,10 @@ package com.zjdex.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zjdex.core.utils.shujt.DesEncrypter;
-import com.zjdex.dao.IdentityCheckRepository;
-import com.zjdex.entity.RecNameCid;
+import com.zjdex.entity.RecSjtNameCid;
 import com.zjdex.service.IdentityCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,23 +15,21 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class IdentityCheckController {
-    @Value("${sjt.apikey}")
-    private String apikey;
-    @Value("${sjt.url}")
-    private static String url;
 
     @Autowired
     private IdentityCheckService identityCheckService;
 
     @PostMapping("/check")
-    public String check(String name,String cid,String outInterfaceNo) {
+    public String check(@RequestBody String pjson) {
+
+        JSONObject json = JSON.parseObject(pjson);
 
         Long userId = 1L;
-        RecNameCid param = new RecNameCid();
+        RecSjtNameCid param = new RecSjtNameCid();
 
-        param.setName(name);
-        param.setCid(cid);
-        RecNameCid result = identityCheckService.trade(userId,outInterfaceNo, param);
+        param.setName(json.getString("name"));
+        param.setCid(json.getString("cid"));
+        RecSjtNameCid result = identityCheckService.trade(userId, json.getString("outInterfaceNo"), param);
 
         String rest = JSON.toJSONString(result);
         String en = null;

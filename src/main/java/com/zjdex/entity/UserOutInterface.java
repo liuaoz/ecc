@@ -1,18 +1,19 @@
 package com.zjdex.entity;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 /**
  * Created by matrix_stone on 2017/1/13.
  */
 @Entity
-public class UserOutInterface extends  BaseEntity{
+public class UserOutInterface extends BaseEntity {
 
     private Long userId;
 
     private Long outInterfaceId;
 
-    private double price;
+    private BigDecimal price;
 
     private String status;
 
@@ -32,11 +33,11 @@ public class UserOutInterface extends  BaseEntity{
         this.outInterfaceId = outInterfaceId;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

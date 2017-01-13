@@ -43,7 +43,6 @@ public class IdentityCheckController {
             System.out.println("--en-->" + en);
             String de = DesEncrypter.decrypt(en, "aaaaaaa");
             System.out.println("--de-->" + de);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -44,28 +44,36 @@ public class IdentityCheckService {
 
     public RecSjtNameCid trade(Long userId, String outInterfaceNo, RecSjtNameCid rec) {
 
-        //判断余额是否足够
+        //判断用户是否合法
         User user = userRepository.findOne(userId);
+        if (null == user) {
+            throw new RuntimeException("此用户不存在");
+        }
 
+        //判断接口是否合法
         OutInterface outInterface = outInterfaceRepository.findByInterfaceNo(outInterfaceNo);
         if (null == outInterface) {
             throw new RuntimeException("此接口不存在");
         }
 
+        //判断用户是否有接口权限
         UserOutInterface userOutInterface =
                 userOutInterfaceRepository.findByUserIdAndOutInterfaceId(userId, outInterface.getId());
         if (null == userOutInterface) {
             throw new RuntimeException("没有调用此接口的权限");
         }
 
+        //判断余额是否足够
         if (user.getAmount().subtract(userOutInterface.getPrice()).compareTo(BigDecimal.ZERO) < 0) {
             throw new RuntimeException("余额不足");
         }
 
         RecSjtNameCid recNameCid;
+        //从本地库查询是否存在满足条件的数据
         recNameCid = identityCheckRepository.findByNameAndCid(rec.getName(), rec.getCid());
 
         if (null != recNameCid) {
+            //若本地存在有效的数据，则
             //扣款
             user.setAmount(user.getAmount().subtract(userOutInterface.getPrice()));
             //记录下游请求日志
@@ -79,6 +87,7 @@ public class IdentityCheckService {
             outputRepository.save(outlog);
             return recNameCid;
         } else {
+            //若本地不存在有效的数据，则
             String respContent = null;
             //查询数据源接口
             List<RelationOutInInterface> interfacesList = relationOutInInterfaceRepository.findByOutIdOrderByOrderNum(outInterface.getId());
@@ -86,6 +95,7 @@ public class IdentityCheckService {
                 SupplierInterface inInterface = supplierInterfaceRepository.findOne(relation.getInId());
                 //按数据源优先顺序调用接口
                 //TODO
+
                 respContent = getData(rec);
                 //记录上游请求日志
                 InputLog inlog = new InputLog();

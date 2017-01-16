@@ -1,4 +1,4 @@
-package com.zjdex.core.utils;
+package com.zjdex.core.utils.hanxin;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

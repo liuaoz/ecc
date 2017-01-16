@@ -1,4 +1,4 @@
-package com.zjdex.core.utils;
+package com.zjdex.core.utils.hanxin;
 
 import java.security.Key;
 import java.security.KeyFactory;

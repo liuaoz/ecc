@@ -1,131 +1,45 @@
 package com.zjdex.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zjdex.core.exception.SaveDataException;
 import com.zjdex.core.utils.shujt.DesEncrypter;
-import com.zjdex.dao.*;
-import com.zjdex.entity.*;
+import com.zjdex.dao.IdentityCheckRepository;
+import com.zjdex.entity.RecSjtNameCid;
+import com.zjdex.entity.param.NameCidParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Created by matrix_stone on 2017/1/12.
  */
-@Service
-public class IdentityCheckService {
+@Service()
+@Scope("prototype")
+public class IdentityCheckService extends AbstractInputService<RecSjtNameCid, NameCidParam> {
 
     @Value("${sjt.apikey}")
     private String apikey;
     @Value("${sjt.url}")
     private String url;
-
     private static String NAME_CID_CHECK = "validateIDCard";
 
     @Autowired
     IdentityCheckRepository identityCheckRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    UserOutInterfaceRepository userOutInterfaceRepository;
-    @Autowired
-    OutInterfaceRepository outInterfaceRepository;
-    @Autowired
-    OutputRepository outputRepository;
-    @Autowired
-    RelationOutInInterfaceRepository relationOutInInterfaceRepository;
-    @Autowired
-    SupplierInterfaceRepository supplierInterfaceRepository;
-    @Autowired
-    InputRepository inputRepository;
 
+    @Override
+    public RecSjtNameCid getLocalData(NameCidParam param) {
+        return identityCheckRepository.findByNameAndCid(param.getName(), param.getCid());
+    }
 
-    public RecSjtNameCid trade(Long userId, String outInterfaceNo, RecSjtNameCid rec) {
+    @Override
+    public void setResCode() {
+        this.resCode = "";
+    }
 
-        //判断用户是否合法
-        User user = userRepository.findOne(userId);
-        if (null == user) {
-            throw new RuntimeException("此用户不存在");
-        }
-
-        //判断接口是否合法
-        OutInterface outInterface = outInterfaceRepository.findByInterfaceNo(outInterfaceNo);
-        if (null == outInterface) {
-            throw new RuntimeException("此接口不存在");
-        }
-
-        //判断用户是否有接口权限
-        UserOutInterface userOutInterface =
-                userOutInterfaceRepository.findByUserIdAndOutInterfaceId(userId, outInterface.getId());
-        if (null == userOutInterface) {
-            throw new RuntimeException("没有调用此接口的权限");
-        }
-
-        //判断余额是否足够
-        if (user.getAmount().subtract(userOutInterface.getPrice()).compareTo(BigDecimal.ZERO) < 0) {
-            throw new RuntimeException("余额不足");
-        }
-
-        RecSjtNameCid recNameCid;
-        //从本地库查询是否存在满足条件的数据
-        recNameCid = identityCheckRepository.findByNameAndCid(rec.getName(), rec.getCid());
-
-        if (null != recNameCid) {
-            //若本地存在有效的数据，则
-            //扣款
-            user.setAmount(user.getAmount().subtract(userOutInterface.getPrice()));
-            //记录下游请求日志
-            OutputLog outlog = new OutputLog();
-            outlog.setUserId(userId);
-            outlog.setOutInterfaceId(outInterface.getId());
-            outlog.setParam(rec.getName() + "." + rec.getCid());
-            outlog.setRespCode(recNameCid.getResCode());
-            outlog.setIsFree("0");
-            outlog.setPrice(userOutInterface.getPrice());
-            outputRepository.save(outlog);
-            return recNameCid;
-        } else {
-            //若本地不存在有效的数据，则
-            String respContent = null;
-            //查询数据源接口
-            List<RelationOutInInterface> interfacesList = relationOutInInterfaceRepository.findByOutIdOrderByOrderNum(outInterface.getId());
-            for (RelationOutInInterface relation : interfacesList) {
-                SupplierInterface inInterface = supplierInterfaceRepository.findOne(relation.getInId());
-                //按数据源优先顺序调用接口
-                //TODO
-
-                respContent = getData(rec);
-                //记录上游请求日志
-                InputLog inlog = new InputLog();
-                inlog.setUserId(userId);
-                inlog.setAmount(inInterface.getPrice());
-                inlog.setResponse(respContent);
-                inlog.setInInterfaceId(inInterface.getId());
-                inputRepository.save(inlog);
-            }
-
-
-            recNameCid = parseData(respContent);
-            identityCheckRepository.save(recNameCid);
-
-            //扣款
-            user.setAmount(user.getAmount().subtract(userOutInterface.getPrice()));
-            userRepository.save(user);
-        }
-
-        //记录下游请求日志
-        OutputLog outlog = new OutputLog();
-        outlog.setUserId(userId);
-        outlog.setOutInterfaceId(outInterface.getId());
-        outlog.setParam(rec.getName() + "." + rec.getCid());
-        outlog.setRespCode(recNameCid.getResCode());
-        outlog.setIsFree("0");
-        outlog.setPrice(userOutInterface.getPrice());
-        outputRepository.save(outlog);
-
-        return recNameCid;
+    @Override
+    public void saveData(RecSjtNameCid entity) throws SaveDataException {
+        identityCheckRepository.save(entity);
     }
 
     /**
@@ -133,20 +47,21 @@ public class IdentityCheckService {
      *
      * @return
      */
-    public String getData(RecSjtNameCid recNameCid) {
+    @Override
+    public String getData(NameCidParam recNameCid) {
 
         String result = null;
 
         String param = "idCardName=" + recNameCid.getName() + "&idCardCode=" + recNameCid.getCid();
 
         StringBuffer sb = new StringBuffer(
-                url + NAME_CID_CHECK + "?apikey=" + apikey + "&rettype=json&encryptParam=");
+            url + NAME_CID_CHECK + "?apikey=" + apikey + "&rettype=json&encryptParam=");
 
         try {
             String fullUrl = sb.append(DesEncrypter.encrypt(param, apikey)).toString();
             //            result = HttpUtil.sendGet(fullUrl, "UTF-8");
             result =
-                    "{\"data\":{\"message\":\"一致\",\"result\":\"00\",\"idCardName\":\"王娟\",\"idCardCode\":\"431121199003108447\"},\"resCode\":\"0000\",\"resMsg\":\"SUCCESS\",\"orderNo\":\"20170112160746100031\"}";
+                "{\"data\":{\"message\":\"一致\",\"result\":\"00\",\"idCardName\":\"王娟\",\"idCardCode\":\"431121199003108447\"},\"resCode\":\"0000\",\"resMsg\":\"SUCCESS\",\"orderNo\":\"20170112160746100031\"}";
             System.out.println("--result-->" + result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,6 +69,7 @@ public class IdentityCheckService {
         return result;
     }
 
+    @Override
     public RecSjtNameCid parseData(String respContent) {
         JSONObject jsonobj = JSONObject.parseObject(respContent);
         RecSjtNameCid rec = null;

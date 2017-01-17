@@ -21,6 +21,8 @@ public class OutputLog extends BaseEntity {
 
     private String respCode;
 
+    private String isOwner;
+
     public long getUserId() {
         return userId;
     }
@@ -67,5 +69,13 @@ public class OutputLog extends BaseEntity {
 
     public void setRespCode(String respCode) {
         this.respCode = respCode;
+    }
+
+    public String getIsOwner() {
+        return isOwner;
+    }
+
+    public void setIsOwner(String isOwner) {
+        this.isOwner = isOwner;
     }
 }

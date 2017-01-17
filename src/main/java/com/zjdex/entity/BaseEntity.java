@@ -2,10 +2,7 @@ package com.zjdex.entity;
 
 import com.zjdex.core.constant.ConstantDB;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -23,6 +20,9 @@ public abstract class BaseEntity {
 
     @Column(length = ConstantDB.LENGTH_NAME)
     public String operator;
+
+    @Version
+    private int version;
 
     @Column(name = "create_time", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     public Date createTime;

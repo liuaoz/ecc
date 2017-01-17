@@ -4,7 +4,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: prd
   jpa:
     hibernate:
       ddl-auto: update

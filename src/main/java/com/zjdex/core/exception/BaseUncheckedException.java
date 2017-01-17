@@ -6,7 +6,7 @@ package com.zjdex.core.exception;
  * @author LIUAOZ
  * @version 1.0
  */
-public class BaseUncheckException extends RuntimeException {
+public class BaseUncheckedException extends RuntimeException {
 
     private static final long serialVersionUID = -2121599154084035677L;
 
@@ -26,11 +26,11 @@ public class BaseUncheckException extends RuntimeException {
     private Object[] values;
 
 
-    public BaseUncheckException() {
+    public BaseUncheckedException() {
         super();
     }
 
-    public BaseUncheckException(String code) {
+    public BaseUncheckedException(String code) {
         super();
         this.code = code;
         this.values = null;
@@ -38,13 +38,13 @@ public class BaseUncheckException extends RuntimeException {
         this.msg = Message.getMessage(code);
     }
 
-    public BaseUncheckException(String code, String msg) {
+    public BaseUncheckedException(String code, String msg) {
         super();
         this.code = code;
         this.msg = msg;
     }
 
-    public BaseUncheckException(String code, Object[] args) {
+    public BaseUncheckedException(String code, Object[] args) {
         super();
         this.code = code;
         this.values = args;
@@ -52,7 +52,7 @@ public class BaseUncheckException extends RuntimeException {
         this.msg = Message.getMessage(code, args);
     }
 
-    public BaseUncheckException(Throwable rootCause, String code, Object[] args) {
+    public BaseUncheckedException(Throwable rootCause, String code, Object[] args) {
         super(rootCause);
         this.code = code;
         this.values = args;

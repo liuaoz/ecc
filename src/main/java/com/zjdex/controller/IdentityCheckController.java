@@ -4,11 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zjdex.core.utils.shujt.DesEncrypter;
 import com.zjdex.entity.RecSjtNameCid;
+import com.zjdex.entity.param.NameCidParam;
+import com.zjdex.service.AbstractInputService;
 import com.zjdex.service.IdentityCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by matrix_stone on 2017/1/11.
@@ -16,20 +20,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class IdentityCheckController {
 
+    private AtomicInteger count = new AtomicInteger(0);
+
     @Autowired
     private IdentityCheckService identityCheckService;
 
     @PostMapping("/check")
     public String check(@RequestBody String pjson) {
 
+        count.addAndGet(1);
+        System.out.println("--count->" + count);
+
         JSONObject json = JSON.parseObject(pjson);
 
-        Long userId = 1L;
-        RecSjtNameCid param = new RecSjtNameCid();
+        NameCidParam param = new NameCidParam();
 
         param.setName(json.getString("name"));
         param.setCid(json.getString("cid"));
-        RecSjtNameCid result = identityCheckService.trade(userId, json.getString("outInterfaceNo"), param);
+        param.setUserId(json.getLong("userId"));
+        param.setOutInterfaceNo(json.getString("outInterfaceNo"));
+        RecSjtNameCid result = identityCheckService.trade(param);
 
         String rest = JSON.toJSONString(result);
         String en = null;
@@ -41,7 +51,6 @@ public class IdentityCheckController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return en;
     }
 }

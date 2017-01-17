@@ -6,7 +6,7 @@ package com.zjdex.core.exception;
  * @author LIUAOZ
  * @version 1.0
  */
-public class TimeOutException extends BaseUncheckException {
+public class TimeOutException extends BaseUncheckedException {
 
     private static final long serialVersionUID = 6892922575088981963L;
 

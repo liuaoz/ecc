@@ -58,7 +58,7 @@ public abstract class AbstractInputService<E extends BaseEntity, T extends BaseP
             OutputLog outlog = new OutputLog();
             outlog.setUserId(param.getUserId());
             outlog.setOutInterfaceId(outInterface.getId());
-            //            outlog.setParam(param.get + "." + param.getCid());
+            // outlog.setParam(param.get + "." + param.getCid());
             outlog.setRespCode(ConstantDB.OUT_RESP_SUCCESS);
             outlog.setIsFree(ConstantDB.CHARGE_NOT_FREE);
             outlog.setIsOwner(ConstantDB.DATA_FROM_LOCAL);
@@ -127,7 +127,7 @@ public abstract class AbstractInputService<E extends BaseEntity, T extends BaseP
      *
      * @return true:通过 false:不通过
      */
-    public boolean checkUser(final Long userId, final String outInterfaceNo) {
+    private void checkUser(final Long userId, final String outInterfaceNo) {
         //判断用户是否合法
         User user = userRepository.findOne(userId);
         if (null == user) {
@@ -152,7 +152,6 @@ public abstract class AbstractInputService<E extends BaseEntity, T extends BaseP
             throw new BaseUncheckedException(USER_1003);
         }
 
-        return true;
     }
 
     /**

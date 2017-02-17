@@ -101,11 +101,12 @@ public class HttpClient {
             out.print(message);
             out.flush();
 
-            if (null != out) out.close();
         } catch (Exception e) {
             throw e;
         } finally {
-            if (null != out) out.close();
+            if (null != out){
+                out.close();
+            }
         }
     }
 

@@ -156,7 +156,7 @@ public class DateUtil {
         Date tmpDate = null == date ? new Date() : date;
 
         String tmpFormat = "yyyy-MM-dd HH:mm:ss";
-        if (null != format || "".equals(format)) {
+        if (null != format && !"".equals(format)) {
             tmpFormat = format;
         }
         SimpleDateFormat sdf = new SimpleDateFormat(tmpFormat);

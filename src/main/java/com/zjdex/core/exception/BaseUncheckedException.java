@@ -23,7 +23,7 @@ public class BaseUncheckedException extends RuntimeException {
     /**
      * 传递给变量的错误值
      */
-    private Object[] values;
+    private transient Object[] values;
 
 
     public BaseUncheckedException() {

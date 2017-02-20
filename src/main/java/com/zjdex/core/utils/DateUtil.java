@@ -1,335 +1,341 @@
 package com.zjdex.core.utils;
 
-import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
- * DateUtils class
+ * 日期工具类
  * 
- * @author matrix
- *
  */
 public class DateUtil {
 
-    public static Calendar cl = Calendar.getInstance();
+    // 默认日期格式
+    public static final String DATE_DEFAULT_FORMAT = "yyyy-MM-dd";
 
-    /** 日期格式yyyy-MM字符串常量 */
-    private static final String MONTH_FORMAT = "yyyy-MM";
-    /** 日期格式yyyy-MM-dd字符串常量 */
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-    /** 日期格式HH:mm:ss字符串常量 */
-    private static final String HOUR_FORMAT = "HH:mm:ss";
-    /** 日期格式yyyy-MM-dd HH:mm:ss字符串常量 */
-    private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    /** 某天结束时分秒字符串常量 23:59:59 */
-    public static final String DAY_END_STRING_HHMMSS = " 23:59:59";
+    // 默认日期时间格式
+    public static final String DATETIME_DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    public static SimpleDateFormat sdf_month_format = new SimpleDateFormat(MONTH_FORMAT);
-    public static SimpleDateFormat sdf_date_format = new SimpleDateFormat(DATE_FORMAT);
-    public static SimpleDateFormat sdf_hour_format = new SimpleDateFormat(HOUR_FORMAT);
-    public static SimpleDateFormat sdf_datetime_format = new SimpleDateFormat(DATETIME_FORMAT);
+    // 默认时间格式
+    public static final String TIME_DEFAULT_FORMAT = "HH:mm:ss";
 
-    public DateUtil() {
+    // 日期格式化
+    private static DateFormat dateFormat = null;
 
+    // 日期时间格式化
+    private static DateFormat dateTimeFormat = null;
+
+    // 时间格式化
+    private static DateFormat timeFormat = null;
+
+    private static Calendar gregorianCalendar = null;
+
+    static {
+        dateFormat = new SimpleDateFormat(DATE_DEFAULT_FORMAT);
+        dateTimeFormat = new SimpleDateFormat(DATETIME_DEFAULT_FORMAT);
+        timeFormat = new SimpleDateFormat(TIME_DEFAULT_FORMAT);
+        gregorianCalendar = new GregorianCalendar();
     }
 
     /**
-     * Get current date time, the format is "yyyy-MM-dd HH:mm:ss" <br>
-     * Example: 2016-08-11 15:18:10
-     * 
-     * @return yyyy-MM-dd HH:mm:ss
-     */
-    public static String getNowDateTime() {
-        return sdf_datetime_format.format(Calendar.getInstance().getTime());
-    }
-
-    /**
-     * Get current year, the format is such as 2016
-     * 
-     * @return
-     */
-    public static String getNowYear() {
-        return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
-    }
-
-    /**
-     * Get current year-month, the format is "yyyy-MM"<br>
-     * Example: 2016-08
-     * 
-     * @return yyyy-MM
-     */
-    public static String getNowYearMonth() {
-        return sdf_month_format.format(Calendar.getInstance().getTime());
-    }
-
-    /**
-     * Get current year-month-date, the format is "yyyy-MM-dd"<br>
-     * Example: 2016-08-11
-     * 
-     * @return yyyy-MM-dd
-     */
-    public static String getNowYearMonthDate() {
-        return sdf_date_format.format(Calendar.getInstance().getTime());
-    }
-
-    /**
-     * Get current time, the format is "HH:mm:ss"<br>
-     * Example: 15:56:50
-     * 
-     * @return HH:mm:ss
-     */
-    public static String getNowTime() {
-        return sdf_hour_format.format(Calendar.getInstance().getTime());
-    }
-
-    /**
-     * Get the day number within the current year.
-     * 
-     * @return
-     */
-    public static Integer getDayInYear() {
-        return Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
-    }
-
-    /**
-     * Get the day number within the current month.
-     * 
-     * @return
-     */
-    public static Integer getDayInMonth() {
-        return Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-    }
-
-    /**
-     * Get the day number within the current week. <br>
-     * Example:Sunday-Saturday(0-7)
-     * 
-     * @return
-     */
-    public static Integer getDayInWeek() {
-        return Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-    }
-
-    /**
-     * Add special number days to the special date.
-     * 
-     * @param date special date
-     * @param num days
-     * @return the date after addDay
-     */
-    public static Date addDay(Date date, int num) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.DAY_OF_MONTH, num);
-        return cal.getTime();
-    }
-
-    // TODO update the method follow.
-
-    public static Date getMouthDate(int nextMouths, int days) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.DAY_OF_MONTH, days);
-        calendar.add(Calendar.MONTH, nextMouths);
-
-        return calendar.getTime();
-    }
-
-    public static String nowString() {
-        return getDateString(new Date(), "yyyy-MM-dd HH:mm:ss");
-    }
-
-    /**
-     * 指定时间格式转字符串
+     * 日期格式化yyyy-MM-dd
      * 
      * @param date
-     * @param format
      * @return
      */
-    public static String getDateString(Date date, String format) {
-        Date tmpDate = null == date ? new Date() : date;
-
-        String tmpFormat = "yyyy-MM-dd HH:mm:ss";
-        if (null != format && !"".equals(format)) {
-            tmpFormat = format;
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat(tmpFormat);
-        return sdf.format(tmpDate);
-    }
-
-    /**
-     * 
-     * @param text
-     * @param format
-     * @return
-     */
-    public static Date parsedate(String text, String format) {
+    public static Date formatDate(String date, String format) {
         try {
-            return new SimpleDateFormat(format).parse(text);
+            return new SimpleDateFormat(format).parse(date);
         } catch (ParseException e) {
-            throw new RuntimeException(e.getMessage());
+            e.printStackTrace();
         }
+        return null;
     }
-
-    public static DatePeriods getYestodayPeriods() {
-        Calendar calendar = Calendar.getInstance();
-
-        /*** 定制每日00:00时间 ***/
-
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        Date date = calendar.getTime();
-
-        // 此时要在 第一次执行定时任务的时间 加一天，以便此任务在下个时间点执行。如果不加一天，任务会立即执行。
-        // if (date.before(new Date())) {
-        // date = addDay(date, -1);
-        // }
-
-        Date yestoday = addDay(date, -1);
-
-        long begin = yestoday.getTime();
-        long end = yestoday.getTime() + 60 * 60 * 24 * 1000;
-
-        return new DatePeriods(begin, end);
-    }
-
-    /*
-     * @Test public void testDatePeriods(){ DatePeriods y1 = getYestodayPeriods(); DatePeriods y2 =
-     * getYestodayPeriods(); TestCase.assertEquals(y1, y2); System.out.println(y1);
-     * System.out.println(y2); System.out.println(System.currentTimeMillis()); }
-     * 
-     * @Test public void testNewDate(){ DatePeriods y1 = getDayPeriods(-1); DatePeriods y2 =
-     * getYestodayPeriods(); TestCase.assertEquals(y1, y2); }
-     */
-
-    public static class DatePeriods implements Serializable {
-        /**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
-        private long beginTime;
-        private long endTime;
-
-        public DatePeriods(long beginTime, long endTime) {
-            super();
-            this.beginTime = beginTime;
-            this.endTime = endTime;
-        }
-
-        public long getBeginTime() {
-            return beginTime;
-        }
-
-        public void setBeginTime(long beginTime) {
-            this.beginTime = beginTime;
-        }
-
-        public long getEndTime() {
-            return endTime;
-        }
-
-        public void setEndTime(long endTime) {
-            this.endTime = endTime;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + (int) (beginTime ^ (beginTime >>> 32));
-            result = prime * result + (int) (endTime ^ (endTime >>> 32));
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null) return false;
-            if (getClass() != obj.getClass()) return false;
-            DatePeriods other = (DatePeriods) obj;
-            if (beginTime != other.beginTime) return false;
-            if (endTime != other.endTime) return false;
-            return true;
-        }
-
-        @Override
-        public String toString() {
-            return "DatePeriods:yestoday [beginTime=" + beginTime + ", endTime=" + endTime + "]";
-        }
-
-    }
-
-    public static int getDaysBetweenDates(Date d1, Date d2) {
-        long t1 = d1.getTime();
-        long t2 = d2.getTime();
-        long between_days = Math.abs((t1 - t2) / (1000 * 3600 * 24));
-
-        return Integer.parseInt(String.valueOf(between_days));
-    }
-
-    public static DatePeriods getDayPeriods(int day) {
-        Calendar calendar = Calendar.getInstance();
-
-        /*** 定制每日00:00时间 ***/
-
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        Date date = calendar.getTime();
-
-        // 此时要在 第一次执行定时任务的时间 加一天，以便此任务在下个时间点执行。如果不加一天，任务会立即执行。
-        // if (date.before(new Date())) {
-        // date = addDay(date, -1);
-        // }
-
-        Date newDay = addDay(date, day);
-
-        long begin = newDay.getTime();
-        long end = newDay.getTime() + 60 * 60 * 24 * 1000;
-
-        return new DatePeriods(begin, end);
-    }
-
-
 
     /**
-     * 获得到当天晚上12所剩余的毫秒数
+     * 日期格式化yyyy-MM-dd
      * 
-     * @return 时间的毫秒值
+     * @param date
+     * @return
      */
-    public static long getRemainTime() {
-        Calendar calendar = Calendar.getInstance();
+    public static String getDateFormat(Date date) {
+        return dateFormat.format(date);
+    }
 
-        /*** 定制每日00:00时间 ***/
+    /**
+     * 日期格式化yyyy-MM-dd HH:mm:ss
+     * 
+     * @param date
+     * @return
+     */
+    public static String getDateTimeFormat(Date date) {
+        return dateTimeFormat.format(date);
+    }
 
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+    /**
+     * 时间格式化
+     * 
+     * @param date
+     * @return HH:mm:ss
+     */
+    public static String getTimeFormat(Date date) {
+        return timeFormat.format(date);
+    }
 
-        Date date = calendar.getTime(); // 第一次执行定时任务的时间
-
-        // 如果第一次执行定时任务的时间 小于 当前的时间
-        // 此时要在 第一次执行定时任务的时间 加一天，以便此任务在下个时间点执行。如果不加一天，任务会立即执行。
-        if (date.before(new Date())) {
-            date = addDay(date, 1);
+    /**
+     * 日期格式化
+     * 
+     * @param date
+     * @param formatStr 格式类型
+     * @return
+     */
+    public static String getDateFormat(Date date, String formatStr) {
+        if (null !=formatStr&&formatStr.length()> 0) {
+            return new SimpleDateFormat(formatStr).format(date);
         }
+        return null;
+    }
 
-        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
-        // System.out.println("12 times:"+sdf.format(date));
-        // System.out.println("now times:"+sdf.format(new Date()));
+    /**
+     * 日期格式化
+     * 
+     * @param date
+     * @return
+     */
+    public static Date getDateFormat(String date) {
+        try {
+            return dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-        return date.getTime() - new Date().getTime();
+    /**
+     * 时间格式化
+     * 
+     * @param date
+     * @return
+     */
+    public static Date getDateTimeFormat(String date) {
+        try {
+            return dateTimeFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取当前日期(yyyy-MM-dd)
+     * 
+     * @return
+     */
+    public static Date getNowDate() {
+        return DateUtil.getDateFormat(dateFormat.format(new Date()));
+    }
+
+    /**
+     * 获取当前日期星期一日期
+     * 
+     * @return date
+     */
+    public static Date getFirstDayOfWeek() {
+        gregorianCalendar.setFirstDayOfWeek(Calendar.MONDAY);
+        gregorianCalendar.setTime(new Date());
+        gregorianCalendar.set(Calendar.DAY_OF_WEEK, gregorianCalendar.getFirstDayOfWeek()); // Monday
+        return gregorianCalendar.getTime();
+    }
+
+    /**
+     * 获取当前日期星期日日期
+     * 
+     * @return date
+     */
+    public static Date getLastDayOfWeek() {
+        gregorianCalendar.setFirstDayOfWeek(Calendar.MONDAY);
+        gregorianCalendar.setTime(new Date());
+        gregorianCalendar.set(Calendar.DAY_OF_WEEK, gregorianCalendar.getFirstDayOfWeek() + 6); // Monday
+        return gregorianCalendar.getTime();
+    }
+
+    /**
+     * 获取日期星期一日期
+     * 
+     * @param date
+     * @return date
+     */
+    public static Date getFirstDayOfWeek(Date date) {
+        if (date == null) {
+            return null;
+        }
+        gregorianCalendar.setFirstDayOfWeek(Calendar.MONDAY);
+        gregorianCalendar.setTime(date);
+        gregorianCalendar.set(Calendar.DAY_OF_WEEK, gregorianCalendar.getFirstDayOfWeek()); // Monday
+        return gregorianCalendar.getTime();
+    }
+
+    /**
+     * 获取日期星期一日期
+     * 
+     * @param date
+     * @return date
+     */
+    public static Date getLastDayOfWeek(Date date) {
+        if (date == null) {
+            return null;
+        }
+        gregorianCalendar.setFirstDayOfWeek(Calendar.MONDAY);
+        gregorianCalendar.setTime(date);
+        gregorianCalendar.set(Calendar.DAY_OF_WEEK, gregorianCalendar.getFirstDayOfWeek() + 6); // Monday
+        return gregorianCalendar.getTime();
+    }
+
+    /**
+     * 获取当前月的第一天
+     * 
+     * @return date
+     */
+    public static Date getFirstDayOfMonth() {
+        gregorianCalendar.setTime(new Date());
+        gregorianCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        return gregorianCalendar.getTime();
+    }
+
+    /**
+     * 获取当前月的最后一天
+     * 
+     * @return
+     */
+    public static Date getLastDayOfMonth() {
+        gregorianCalendar.setTime(new Date());
+        gregorianCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        gregorianCalendar.add(Calendar.MONTH, 1);
+        gregorianCalendar.add(Calendar.DAY_OF_MONTH, -1);
+        return gregorianCalendar.getTime();
+    }
+
+    /**
+     * 获取指定月的第一天
+     * 
+     * @param date
+     * @return
+     */
+    public static Date getFirstDayOfMonth(Date date) {
+        gregorianCalendar.setTime(date);
+        gregorianCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        return gregorianCalendar.getTime();
+    }
+
+    /**
+     * 获取指定月的最后一天
+     * 
+     * @param date
+     * @return
+     */
+    public static Date getLastDayOfMonth(Date date) {
+        gregorianCalendar.setTime(date);
+        gregorianCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        gregorianCalendar.add(Calendar.MONTH, 1);
+        gregorianCalendar.add(Calendar.DAY_OF_MONTH, -1);
+        return gregorianCalendar.getTime();
+    }
+
+    /**
+     * 获取日期前一天
+     * 
+     * @param date
+     * @return
+     */
+    public static Date getDayBefore(Date date) {
+        gregorianCalendar.setTime(date);
+        int day = gregorianCalendar.get(Calendar.DATE);
+        gregorianCalendar.set(Calendar.DATE, day - 1);
+        return gregorianCalendar.getTime();
+    }
+
+    /**
+     * 获取日期后一天
+     * 
+     * @param date
+     * @return
+     */
+    public static Date getDayAfter(Date date) {
+        gregorianCalendar.setTime(date);
+        int day = gregorianCalendar.get(Calendar.DATE);
+        gregorianCalendar.set(Calendar.DATE, day + 1);
+        return gregorianCalendar.getTime();
+    }
+
+    /**
+     * 获取当前年
+     * 
+     * @return
+     */
+    public static int getNowYear() {
+        Calendar d = Calendar.getInstance();
+        return d.get(Calendar.YEAR);
+    }
+
+    /**
+     * 获取当前月份
+     * 
+     * @return
+     */
+    public static int getNowMonth() {
+        Calendar d = Calendar.getInstance();
+        return d.get(Calendar.MONTH) + 1;
+    }
+
+    /**
+     * 获取当月天数
+     * 
+     * @return
+     */
+    public static int getNowMonthDay() {
+        Calendar d = Calendar.getInstance();
+        return d.getActualMaximum(Calendar.DATE);
+    }
+
+    /**
+     * 获取时间段的每一天
+     * 
+     * @param startDate
+     * @param endDate
+     * @return 日期列表
+     */
+    public static List<Date> getEveryDay(Date startDate, Date endDate) {
+        if (startDate == null || endDate == null) {
+            return null;
+        }
+        // 格式化日期(yy-MM-dd)
+        startDate = DateUtil.getDateFormat(DateUtil.getDateFormat(startDate));
+        endDate = DateUtil.getDateFormat(DateUtil.getDateFormat(endDate));
+        List<Date> dates = new ArrayList<Date>();
+        gregorianCalendar.setTime(startDate);
+        dates.add(gregorianCalendar.getTime());
+        while (gregorianCalendar.getTime().compareTo(endDate) < 0) {
+            // 加1天
+            gregorianCalendar.add(Calendar.DAY_OF_MONTH, 1);
+            dates.add(gregorianCalendar.getTime());
+        }
+        return dates;
+    }
+
+    /**
+     * 获取提前多少个月
+     * 
+     * @param monty
+     * @return
+     */
+    public static Date getFirstMonth(int monty) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, -monty);
+        return c.getTime();
     }
 }

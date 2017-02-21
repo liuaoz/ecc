@@ -33,13 +33,10 @@ public class DateUtil {
     // 时间格式化
     private static DateFormat timeFormat = null;
 
-    private static Calendar gregorianCalendar = null;
-
     static {
         dateFormat = new SimpleDateFormat(DATE_DEFAULT_FORMAT);
         dateTimeFormat = new SimpleDateFormat(DATETIME_DEFAULT_FORMAT);
         timeFormat = new SimpleDateFormat(TIME_DEFAULT_FORMAT);
-        gregorianCalendar = new GregorianCalendar();
     }
 
     /**
@@ -146,6 +143,7 @@ public class DateUtil {
      * @return date 星期一日期（如：Mon Feb 13 22:36:01 CST 2017）
      */
     public static Date getFirstDayOfWeek() {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setFirstDayOfWeek(Calendar.MONDAY);
         gregorianCalendar.setTime(new Date());
         gregorianCalendar.set(Calendar.DAY_OF_WEEK, gregorianCalendar.getFirstDayOfWeek()); // Monday
@@ -158,6 +156,7 @@ public class DateUtil {
      * @return date 星期日日期（如：Sun Feb 26 10:16:16 CST 2017）
      */
     public static Date getLastDayOfWeek() {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setFirstDayOfWeek(Calendar.MONDAY);
         gregorianCalendar.setTime(new Date());
         gregorianCalendar.set(Calendar.DAY_OF_WEEK, gregorianCalendar.getFirstDayOfWeek() + 6); // Monday
@@ -174,6 +173,7 @@ public class DateUtil {
         if (date == null) {
             return null;
         }
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setFirstDayOfWeek(Calendar.MONDAY);
         gregorianCalendar.setTime(date);
         gregorianCalendar.set(Calendar.DAY_OF_WEEK, gregorianCalendar.getFirstDayOfWeek()); // Monday
@@ -190,6 +190,7 @@ public class DateUtil {
         if (date == null) {
             return null;
         }
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setFirstDayOfWeek(Calendar.MONDAY);
         gregorianCalendar.setTime(date);
         gregorianCalendar.set(Calendar.DAY_OF_WEEK, gregorianCalendar.getFirstDayOfWeek() + 6); // Monday
@@ -202,6 +203,7 @@ public class DateUtil {
      * @return date 当月第一天（如：Wed Feb 01 09:53:52 CST 2017）
      */
     public static Date getFirstDayOfMonth() {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setTime(new Date());
         gregorianCalendar.set(Calendar.DAY_OF_MONTH, 1);
         return gregorianCalendar.getTime();
@@ -213,6 +215,7 @@ public class DateUtil {
      * @return 当月最后一天（如：Tue Feb 28 09:55:11 CST 2017）
      */
     public static Date getLastDayOfMonth() {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setTime(new Date());
         gregorianCalendar.set(Calendar.DAY_OF_MONTH, 1);
         gregorianCalendar.add(Calendar.MONTH, 1);
@@ -227,6 +230,7 @@ public class DateUtil {
      * @return 指定日期所在月的第一天（如：Wed Feb 01 22:36:01 CST 2017）
      */
     public static Date getFirstDayOfMonth(Date date) {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setTime(date);
         gregorianCalendar.set(Calendar.DAY_OF_MONTH, 1);
         return gregorianCalendar.getTime();
@@ -239,6 +243,7 @@ public class DateUtil {
      * @return 指定日期所在月的最后一天（如：Tue Feb 28 22:36:01 CST 2017）
      */
     public static Date getLastDayOfMonth(Date date) {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setTime(date);
         gregorianCalendar.set(Calendar.DAY_OF_MONTH, 1);
         gregorianCalendar.add(Calendar.MONTH, 1);
@@ -253,6 +258,7 @@ public class DateUtil {
      * @return 前一天（如：Wed Feb 15 22:36:01 CST 2017）
      */
     public static Date getDayBefore(Date date) {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setTime(date);
         int day = gregorianCalendar.get(Calendar.DATE);
         gregorianCalendar.set(Calendar.DATE, day - 1);
@@ -266,6 +272,7 @@ public class DateUtil {
      * @return 后一天（如：Fri Feb 17 22:36:01 CST 2017）
      */
     public static Date getDayAfter(Date date) {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setTime(date);
         int day = gregorianCalendar.get(Calendar.DATE);
         gregorianCalendar.set(Calendar.DATE, day + 1);
@@ -317,6 +324,7 @@ public class DateUtil {
         startDate = DateUtil.getDateFormat(DateUtil.getDateFormat(startDate));
         endDate = DateUtil.getDateFormat(DateUtil.getDateFormat(endDate));
         List<Date> dates = new ArrayList<Date>();
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setTime(startDate);
         dates.add(gregorianCalendar.getTime());
         while (gregorianCalendar.getTime().compareTo(endDate) < 0) {

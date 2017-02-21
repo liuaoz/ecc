@@ -106,7 +106,7 @@ public class HttpClient {
      * @throws IOException
      * @throws Exception
      */
-    private String response(HttpURLConnection connection, String encoding) throws URISyntaxException, IOException, Exception {
+    private String response(HttpURLConnection connection, String encoding) throws URISyntaxException, IOException {
         InputStream in = null;
         StringBuilder sb = new StringBuilder(1024);
         try {

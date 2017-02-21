@@ -143,7 +143,7 @@ public class DateUtil {
     /**
      * 获取当前日期星期一日期
      * 
-     * @return date
+     * @return date 星期一日期（如：Mon Feb 13 22:36:01 CST 2017）
      */
     public static Date getFirstDayOfWeek() {
         gregorianCalendar.setFirstDayOfWeek(Calendar.MONDAY);
@@ -153,9 +153,9 @@ public class DateUtil {
     }
 
     /**
-     * 获取当前日期星期日日期
+     * 获取当前日期的星期日日期
      * 
-     * @return date
+     * @return date 星期日日期（如：Sun Feb 26 10:16:16 CST 2017）
      */
     public static Date getLastDayOfWeek() {
         gregorianCalendar.setFirstDayOfWeek(Calendar.MONDAY);
@@ -165,10 +165,10 @@ public class DateUtil {
     }
 
     /**
-     * 获取日期星期一日期
+     * 获取指定日期的星期一日期
      * 
-     * @param date
-     * @return date
+     * @param date 指定日期
+     * @return date 星期一日期（如：Mon Feb 13 22:36:01 CST 2017）
      */
     public static Date getFirstDayOfWeek(Date date) {
         if (date == null) {
@@ -181,10 +181,10 @@ public class DateUtil {
     }
 
     /**
-     * 获取日期星期一日期
+     * 获取指定日期的星期天日期
      * 
-     * @param date
-     * @return date
+     * @param date 指定日期
+     * @return date 星期天日期（如：Sun Feb 19 22:36:01 CST 2017）
      */
     public static Date getLastDayOfWeek(Date date) {
         if (date == null) {
@@ -199,7 +199,7 @@ public class DateUtil {
     /**
      * 获取当前月的第一天
      * 
-     * @return date
+     * @return date 当月第一天（如：Wed Feb 01 09:53:52 CST 2017）
      */
     public static Date getFirstDayOfMonth() {
         gregorianCalendar.setTime(new Date());
@@ -210,7 +210,7 @@ public class DateUtil {
     /**
      * 获取当前月的最后一天
      * 
-     * @return
+     * @return 当月最后一天（如：Tue Feb 28 09:55:11 CST 2017）
      */
     public static Date getLastDayOfMonth() {
         gregorianCalendar.setTime(new Date());
@@ -221,10 +221,10 @@ public class DateUtil {
     }
 
     /**
-     * 获取指定月的第一天
+     * 获取指定日期所在月的第一天
      * 
-     * @param date
-     * @return
+     * @param date 指定日期
+     * @return 指定日期所在月的第一天（如：Wed Feb 01 22:36:01 CST 2017）
      */
     public static Date getFirstDayOfMonth(Date date) {
         gregorianCalendar.setTime(date);
@@ -233,10 +233,10 @@ public class DateUtil {
     }
 
     /**
-     * 获取指定月的最后一天
-     * 
-     * @param date
-     * @return
+     * 获取指定日期所在月的最后一天
+     *
+     * @param date 指定日期
+     * @return 指定日期所在月的最后一天（如：Tue Feb 28 22:36:01 CST 2017）
      */
     public static Date getLastDayOfMonth(Date date) {
         gregorianCalendar.setTime(date);
@@ -247,10 +247,10 @@ public class DateUtil {
     }
 
     /**
-     * 获取日期前一天
+     * 获取指定日期前一天
      * 
-     * @param date
-     * @return
+     * @param date 指定日期
+     * @return 前一天（如：Wed Feb 15 22:36:01 CST 2017）
      */
     public static Date getDayBefore(Date date) {
         gregorianCalendar.setTime(date);
@@ -260,10 +260,10 @@ public class DateUtil {
     }
 
     /**
-     * 获取日期后一天
+     * 获取指定日期的后一天
      * 
-     * @param date
-     * @return
+     * @param date 指定日期
+     * @return 后一天（如：Fri Feb 17 22:36:01 CST 2017）
      */
     public static Date getDayAfter(Date date) {
         gregorianCalendar.setTime(date);
@@ -275,7 +275,7 @@ public class DateUtil {
     /**
      * 获取当前年
      * 
-     * @return
+     * @return 当前年（如：2017）
      */
     public static int getNowYear() {
         Calendar d = Calendar.getInstance();
@@ -285,7 +285,7 @@ public class DateUtil {
     /**
      * 获取当前月份
      * 
-     * @return
+     * @return 当前月（如：2）
      */
     public static int getNowMonth() {
         Calendar d = Calendar.getInstance();
@@ -295,7 +295,7 @@ public class DateUtil {
     /**
      * 获取当月天数
      * 
-     * @return
+     * @return 当月天数（如：28）
      */
     public static int getNowMonthDay() {
         Calendar d = Calendar.getInstance();
@@ -305,12 +305,12 @@ public class DateUtil {
     /**
      * 获取时间段的每一天
      * 
-     * @param startDate
-     * @param endDate
+     * @param startDate 开始时间
+     * @param endDate 结束时间
      * @return 日期列表
      */
     public static List<Date> getEveryDay(Date startDate, Date endDate) {
-        if (startDate == null || endDate == null) {
+        if (null == startDate || null == endDate) {
             return null;
         }
         // 格式化日期(yy-MM-dd)
@@ -328,12 +328,12 @@ public class DateUtil {
     }
 
     /**
-     * 获取提前多少个月
+     * 获取提前指定月份数的日期
      * 
-     * @param monty
-     * @return
+     * @param monty 提前月份数
+     * @return 日期（如：Wed Dec 21 10:10:10 CST 2016）
      */
-    public static Date getFirstMonth(int monty) {
+    public static Date getMonthBefore(int monty) {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MONTH, -monty);
         return c.getTime();

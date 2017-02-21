@@ -22,8 +22,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author LIUAOZ
- * @since 2016年12月29日 下午2:10:30
  * @version 1.0
+ * @since 2016年12月29日 下午2:10:30
  */
 public class HttpClient {
 
@@ -44,7 +44,7 @@ public class HttpClient {
 
     /**
      * 构造http请求客户端
-     * 
+     *
      * @param url
      * @param connectionTimeout
      * @param readTimeOut
@@ -61,7 +61,7 @@ public class HttpClient {
 
     /**
      * 发起请求
-     * 
+     *
      * @param data
      * @param encoding
      * @return
@@ -76,8 +76,7 @@ public class HttpClient {
             requestServer(httpURLConnection, getRequestParamString(data, encoding), encoding);
 
             this.result = response(httpURLConnection, encoding);
-            log.info(new StringBuilder().append("返回报文:[").append(this.result).append("]")
-                    .toString());
+            log.info(new StringBuilder().append("返回报文:[").append(this.result).append("]").toString());
             return httpURLConnection.getResponseCode();
         } catch (Exception e) {
             throw e;
@@ -86,14 +85,13 @@ public class HttpClient {
 
     /**
      * 读取服务器响应新，将结果写到连接输出流中
-     * 
+     *
      * @param connection
      * @param message
      * @param encoder
      * @throws Exception
      */
-    private void requestServer(URLConnection connection, String message, String encoder)
-            throws Exception {
+    private void requestServer(URLConnection connection, String message, String encoder) throws Exception {
         PrintStream out = null;
         try {
             connection.connect();
@@ -104,7 +102,7 @@ public class HttpClient {
         } catch (Exception e) {
             throw e;
         } finally {
-            if (null != out){
+            if (null != out) {
                 out.close();
             }
         }
@@ -112,7 +110,7 @@ public class HttpClient {
 
     /**
      * 获取响应报文内容
-     * 
+     *
      * @param connection
      * @param encoding
      * @return
@@ -120,11 +118,9 @@ public class HttpClient {
      * @throws IOException
      * @throws Exception
      */
-    private String response(HttpURLConnection connection, String encoding)
-            throws URISyntaxException, IOException, Exception {
+    private String response(HttpURLConnection connection, String encoding) throws URISyntaxException, IOException, Exception {
         InputStream in = null;
         StringBuilder sb = new StringBuilder(1024);
-        BufferedReader br = null;
         try {
             if (200 == connection.getResponseCode()) {
                 in = connection.getInputStream();
@@ -133,26 +129,22 @@ public class HttpClient {
                 in = connection.getErrorStream();
                 sb.append(new String(read(in), encoding));
             }
-            log.info(new StringBuilder().append("HTTP Return Status-Code:[")
-                    .append(connection.getResponseCode()).append("]").toString());
+            log.info(new StringBuilder().append("HTTP Return Status-Code:[").append(connection.getResponseCode()).append("]").toString());
 
             return sb.toString();
         } catch (Exception e) {
             throw e;
         } finally {
-            if (null != br) {
-                br.close();
-            }
             if (null != in) {
                 in.close();
             }
-            if (null != connection) connection.disconnect();
+            if (null != connection) {connection.disconnect();}
         }
     }
 
     /**
      * 读取输入流，获取其字节数组
-     * 
+     *
      * @param in
      * @return
      * @throws IOException
@@ -170,7 +162,7 @@ public class HttpClient {
 
     /**
      * 创建连接
-     * 
+     *
      * @param encoding
      * @return
      * @throws ProtocolException
@@ -189,8 +181,7 @@ public class HttpClient {
         httpURLConnection.setDoOutput(true);
         httpURLConnection.setUseCaches(false);
         // 设置请求头header
-        httpURLConnection.setRequestProperty("Content-type", new StringBuilder()
-                .append("application/x-www-form-urlencoded;charset=").append(encoding).toString());
+        httpURLConnection.setRequestProperty("Content-type", new StringBuilder().append("application/x-www-form-urlencoded;charset=").append(encoding).toString());
 
         httpURLConnection.setRequestMethod("POST");
         if ("https".equalsIgnoreCase(this.url.getProtocol())) {
@@ -206,7 +197,7 @@ public class HttpClient {
      * 组装请求参数<br>
      * 格式为key1=value1&key2=value2<br>
      * 注意：会对value进行url encode处理
-     * 
+     *
      * @param requestParam
      * @param coder
      * @return
@@ -220,11 +211,10 @@ public class HttpClient {
         if ((null != requestParam) && (0 != requestParam.size())) {
             for (Map.Entry<String, String> en : requestParam.entrySet()) {
                 try {
-                    sf.append(new StringBuilder().append((String) en.getKey()).append("=")
-                            .append((null == en.getValue()) || ("".equals(en.getValue()))
-                                    ? ""
-                                    : URLEncoder.encode(en.getValue(), coder))
-                            .append("&").toString());
+                    sf.append(new StringBuilder().append((String) en.getKey()).append("=").append(
+                        (null == en.getValue()) || ("".equals(en.getValue())) ?
+                            "" :
+                            URLEncoder.encode(en.getValue(), coder)).append("&").toString());
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                     return "";

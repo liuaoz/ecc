@@ -21,52 +21,37 @@ public class SerializationUtil {
 
     /**
      * 序列化
-     * 
+     *
      * @param object
      * @return byte[]
      * @throws IOException
      */
     public static byte[] serialize(Object object) throws IOException {
-
-        ObjectOutputStream oos = null;
-        ByteArrayOutputStream baos = null;
-
-        try {
-            baos = new ByteArrayOutputStream();
-            oos = new ObjectOutputStream(baos);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); ObjectOutputStream oos = new ObjectOutputStream(baos);) {
             oos.writeObject(object);
             byte[] bytes = baos.toByteArray();
             return bytes;
         } catch (IOException e) {
             LOG.error("error when serialize object. " + e.getMessage(), e);
             throw e;
-        } finally {
-            baos.close();
-            oos.close();
         }
     }
 
     /**
      * 反序列化
-     * 
-     * @param byte[]
+     *
+     * @param bytes 字节数组
      * @return Object
      * @throws ClassNotFoundException
      * @throws Exception
      */
     public static Object deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
-
-        ByteArrayInputStream bais = null;
-
-        try {
-            bais = new ByteArrayInputStream(bytes);
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);) {
             ObjectInputStream ois = new ObjectInputStream(bais);
             return ois.readObject();
         } catch (IOException e) {
             LOG.error("error when deserialize object. " + e.getMessage(), e);
             throw e;
-        } finally {
-            bais.close();
         }
     }
 

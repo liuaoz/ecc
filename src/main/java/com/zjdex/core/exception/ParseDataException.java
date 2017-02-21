@@ -1,7 +1,7 @@
 package com.zjdex.core.exception;
 
 /**
- * Description TODO
+ * Description 解析数据异常
  * 
  * @author LIUAOZ
  * @version 1.0

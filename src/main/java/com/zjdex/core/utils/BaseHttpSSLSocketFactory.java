@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.zjdex.core.utils;
 
@@ -17,8 +17,8 @@ import javax.net.ssl.X509TrustManager;
 
 /**
  * @author LIUAOZ
- * @since 2016年12月29日 下午2:05:48
  * @version 1.0
+ * @since 2016年12月29日 下午2:05:48
  */
 public class BaseHttpSSLSocketFactory extends SSLSocketFactory {
 
@@ -26,24 +26,27 @@ public class BaseHttpSSLSocketFactory extends SSLSocketFactory {
         return createEasySSLContext();
     }
 
-    public Socket createSocket(InetAddress arg0, int arg1, InetAddress arg2, int arg3)
-            throws IOException {
+    @Override
+    public Socket createSocket(InetAddress arg0, int arg1, InetAddress arg2, int arg3) throws IOException {
         return getSSLContext().getSocketFactory().createSocket(arg0, arg1, arg2, arg3);
     }
 
-    public Socket createSocket(String arg0, int arg1, InetAddress arg2, int arg3)
-            throws IOException, UnknownHostException {
+    @Override
+    public Socket createSocket(String arg0, int arg1, InetAddress arg2, int arg3) throws IOException {
         return getSSLContext().getSocketFactory().createSocket(arg0, arg1, arg2, arg3);
     }
 
+    @Override
     public Socket createSocket(InetAddress arg0, int arg1) throws IOException {
         return getSSLContext().getSocketFactory().createSocket(arg0, arg1);
     }
 
-    public Socket createSocket(String arg0, int arg1) throws IOException, UnknownHostException {
+    @Override
+    public Socket createSocket(String arg0, int arg1) throws IOException {
         return getSSLContext().getSocketFactory().createSocket(arg0, arg1);
     }
 
+    @Override
     public String[] getSupportedCipherSuites() {
         return null;
     }
@@ -52,8 +55,8 @@ public class BaseHttpSSLSocketFactory extends SSLSocketFactory {
         return null;
     }
 
-    public Socket createSocket(Socket arg0, String arg1, int arg2, boolean arg3)
-            throws IOException {
+    @Override
+    public Socket createSocket(Socket arg0, String arg1, int arg2, boolean arg3) throws IOException {
         return getSSLContext().getSocketFactory().createSocket(arg0, arg1, arg2, arg3);
     }
 
@@ -75,16 +78,22 @@ public class BaseHttpSSLSocketFactory extends SSLSocketFactory {
         }
     }
 
+
     public static class MyX509TrustManager implements X509TrustManager {
         static MyX509TrustManager manger = new MyX509TrustManager();
 
+        @Override
         public X509Certificate[] getAcceptedIssuers() {
             return null;
         }
 
-        public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) {
+        }
 
-        public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) {
+        }
     }
 
 }

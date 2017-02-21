@@ -1,24 +1,12 @@
 package com.zjdex.core.utils;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.Map;
-
-import javax.net.ssl.HttpsURLConnection;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.HttpsURLConnection;
+import java.io.*;
+import java.net.*;
+import java.util.Map;
 
 /**
  * @author LIUAOZ
@@ -27,7 +15,7 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpClient {
 
-    private final static Logger log = LoggerFactory.getLogger(HttpClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpClient.class);
 
     private URL url;
     private int connectionTimeout;
@@ -55,7 +43,7 @@ public class HttpClient {
             this.connectionTimeout = connectionTimeout;
             this.readTimeOut = readTimeOut;
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LOGGER.error("error ==>" + e.getMessage());
         }
     }
 
@@ -76,7 +64,7 @@ public class HttpClient {
             requestServer(httpURLConnection, getRequestParamString(data, encoding), encoding);
 
             this.result = response(httpURLConnection, encoding);
-            log.info(new StringBuilder().append("返回报文:[").append(this.result).append("]").toString());
+            LOGGER.info(new StringBuilder().append("返回报文:[").append(this.result).append("]").toString());
             return httpURLConnection.getResponseCode();
         } catch (Exception e) {
             throw e;
@@ -129,7 +117,7 @@ public class HttpClient {
                 in = connection.getErrorStream();
                 sb.append(new String(read(in), encoding));
             }
-            log.info(new StringBuilder().append("HTTP Return Status-Code:[").append(connection.getResponseCode()).append("]").toString());
+            LOGGER.info(new StringBuilder().append("HTTP Return Status-Code:[").append(connection.getResponseCode()).append("]").toString());
 
             return sb.toString();
         } catch (Exception e) {
@@ -222,7 +210,7 @@ public class HttpClient {
             }
             reqstr = sf.substring(0, sf.length() - 1);
         }
-        log.info(new StringBuilder().append("请求报文:[").append(reqstr).append("]").toString());
+        LOGGER.info(new StringBuilder().append("请求报文:[").append(reqstr).append("]").toString());
         return reqstr;
     }
 

@@ -4,7 +4,7 @@ import com.zjdex.core.constant.Const;
 
 /**
  * Description 系统异常基类
- * 
+ *
  * @author LIUAOZ
  * @version 1.0
  */
@@ -21,9 +21,9 @@ public class BaseCheckedException extends Exception {
 
     /**
      * Constructs a new throwable with the specified detail message.
-     * 
+     *
      * @param message - the detail message. The detail message is saved for later retrieval by the
-     *        getMessage() method.
+     *                getMessage() method.
      */
     public BaseCheckedException(String message) {
         super(message);
@@ -32,9 +32,9 @@ public class BaseCheckedException extends Exception {
     /**
      * Constructs a new throwable with the specified cause and a detail message of (cause==null ?
      * null : cause.toString()) (which typically contains the class and detail message of cause).
-     * 
+     *
      * @param cause the cause (which is saved for later retrieval by the getCause() method). (A null
-     *        value is permitted, and indicates that the cause is nonexistent or unknown.)
+     *              value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public BaseCheckedException(Throwable cause) {
         super(cause);
@@ -42,11 +42,11 @@ public class BaseCheckedException extends Exception {
 
     /**
      * Constructs a new throwable with the specified detail message and cause.
-     * 
+     *
      * @param message the detail message (which is saved for later retrieval by the getMessage()
-     *        method).
-     * @param cause the cause (which is saved for later retrieval by the getCause() method). (A null
-     *        value is permitted, and indicates that the cause is nonexistent or unknown.)
+     *                method).
+     * @param cause   the cause (which is saved for later retrieval by the getCause() method). (A null
+     *                value is permitted, and indicates that the cause is nonexistent or unknown.)
      */
     public BaseCheckedException(String message, Throwable cause) {
         super(message, cause);
@@ -55,6 +55,7 @@ public class BaseCheckedException extends Exception {
     /**
      * get the messages back to it's origin cause.
      */
+    @Override
     public String getMessage() {
         String retval = Const.CR;
         retval += super.getMessage() + Const.CR;
@@ -66,10 +67,10 @@ public class BaseCheckedException extends Exception {
                 retval += message + Const.CR;
             } else {
                 // Add with stack trace elements of cause...
-                StackTraceElement ste[] = cause.getStackTrace();
+                StackTraceElement[] ste = cause.getStackTrace();
                 for (int i = ste.length - 1; i >= 0; i--) {
                     retval += "   at " + ste[i].getClassName() + "." + ste[i].getMethodName() + " ("
-                            + ste[i].getFileName() + ":" + ste[i].getLineNumber() + ")" + Const.CR;
+                        + ste[i].getFileName() + ":" + ste[i].getLineNumber() + ")" + Const.CR;
                 }
             }
         }

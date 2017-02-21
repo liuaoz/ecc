@@ -2,51 +2,56 @@ package com.zjdex.core.datatype;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonRet {
 
-	private static ObjectMapper objectMapper = new ObjectMapper();
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonRet.class);
 
-	private Object data;
-	private String msg;
-	private int code;
+    private static ObjectMapper objectMapper = new ObjectMapper();
 
-	public Object getData() {
-		return data;
-	}
+    private Object data;
+    private String msg;
+    private int code;
 
-	public void setData(Object data) {
-		this.data = data;
-	}
+    public Object getData() {
+        return data;
+    }
 
-	public String getMsg() {
-		return msg;
-	}
+    public void setData(Object data) {
+        this.data = data;
+    }
 
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
+    public String getMsg() {
+        return msg;
+    }
 
-	public int getCode() {
-		return code;
-	}
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
-	public void setCode(int code) {
-		this.code = code;
-	}
+    public int getCode() {
+        return code;
+    }
 
-	@Override
-	public String toString() {
-		try {
-			JsonRet ret = new JsonRet();
-			BeanUtils.copyProperties(this, ret);
-			ret.setMsg((0 == this.getCode() ? "成功:" : "失败:") + this.getMsg());
-			return objectMapper.writeValueAsString(this);
-		} catch (IOException e) {
-			return super.toString();
-		}
-	}
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    @Override
+    public String toString() {
+        try {
+            JsonRet ret = new JsonRet();
+            BeanUtils.copyProperties(this, ret);
+            ret.setMsg((0 == this.getCode() ? "成功:" : "失败:") + this.getMsg());
+            return objectMapper.writeValueAsString(this);
+        } catch (IOException e) {
+            LOGGER.error("error ==>"+e.getMessage());
+            return super.toString();
+        }
+    }
 }

@@ -2,7 +2,7 @@ package com.zjdex.core.exception;
 
 /**
  * Description base unchecked exception
- * 
+ *
  * @author LIUAOZ
  * @version 1.0
  */
@@ -13,21 +13,24 @@ public class BaseUncheckedException extends RuntimeException {
     /**
      * 错误代码，用于唯一标识错误类型。
      */
-    private String code;
+    private final String code;
 
     /**
      * 根据code从资源文件转成明文的错误信息
      */
-    private String msg;
+    private final String msg;
 
     /**
      * 传递给变量的错误值
      */
-    private transient Object[] values;
+    private final transient Object[] values;
 
 
     public BaseUncheckedException() {
         super();
+        this.code = null;
+        this.msg = null;
+        this.values = null;
     }
 
     public BaseUncheckedException(String code) {
@@ -42,6 +45,7 @@ public class BaseUncheckedException extends RuntimeException {
         super();
         this.code = code;
         this.msg = msg;
+        this.values = null;
     }
 
     public BaseUncheckedException(String code, Object[] args) {
@@ -64,24 +68,12 @@ public class BaseUncheckedException extends RuntimeException {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
     public Object[] getValues() {
         return values;
-    }
-
-    public void setValues(Object[] values) {
-        this.values = values;
     }
 
 }

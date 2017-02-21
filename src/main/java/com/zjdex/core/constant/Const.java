@@ -2,11 +2,13 @@ package com.zjdex.core.constant;
 
 /**
  * This Class contain the constant variable.
- * 
- * @author matrix
  *
+ * @author matrix
  */
-public class Const {
+public final class Const {
+
+    private Const() {
+    }
 
     /**
      * operating systems specific Carriage Return

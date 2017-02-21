@@ -8,6 +8,9 @@ package com.zjdex.core.constant;
  */
 public final class ConstantDB {
 
+    private ConstantDB() {
+    }
+
     /**
      * 交易流水号 64
      */

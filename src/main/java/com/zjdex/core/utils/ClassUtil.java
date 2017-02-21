@@ -7,33 +7,34 @@ import java.util.List;
 
 /**
  * 类信息操作工具
- * 
+ *
  * @author LIUAOZ
  * @version 1.0
  */
 public class ClassUtil {
 
+    private ClassUtil() {
+    }
+
     /**
      * 获取类的所有属性，包括
-     * 
+     *
      * @param cls
      * @return
      */
     public static Field[] getAllField(Class<?> cls) {
 
-        List<Field> public_fields = Arrays.asList(cls.getFields());
-        List<Field> declared_fields = Arrays.asList(cls.getDeclaredFields());
+        List<Field> publicFields = Arrays.asList(cls.getFields());
+        List<Field> declaredFields = Arrays.asList(cls.getDeclaredFields());
 
-        List<Field> all_fields = new ArrayList<>();
-        all_fields.addAll(public_fields);
+        List<Field> allFields = new ArrayList<>();
+        allFields.addAll(publicFields);
 
-        for (Field field : declared_fields) {
-            if (!all_fields.contains(field)) {
-                all_fields.add(field);
+        for (Field field : declaredFields) {
+            if (!allFields.contains(field)) {
+                allFields.add(field);
             }
         }
-
-        return all_fields.toArray(new Field[0]);
+        return allFields.toArray(new Field[0]);
     }
-
 }

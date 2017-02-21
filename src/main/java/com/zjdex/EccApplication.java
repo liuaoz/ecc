@@ -7,8 +7,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class EccApplication {
 
+    private EccApplication() {
+    }
+
     public static void main(String[] args) {
-        ConfigurableApplicationContext cat =  SpringApplication.run(EccApplication.class, args);
+        ConfigurableApplicationContext cat = SpringApplication.run(EccApplication.class, args);
         cat.close();
     }
 }

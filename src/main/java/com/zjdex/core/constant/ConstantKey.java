@@ -7,7 +7,10 @@ package com.zjdex.core.constant;
  * @version 1.0
  * @since 2017年1月3日 下午3:35:04
  */
-public class ConstantKey {
+public final class ConstantKey {
+
+    private ConstantKey() {
+    }
 
     /**
      * 平台出现了不可预计的错误

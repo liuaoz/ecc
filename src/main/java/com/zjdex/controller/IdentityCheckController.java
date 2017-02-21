@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.zjdex.core.utils.shujt.DesEncrypter;
 import com.zjdex.entity.RecSjtNameCid;
 import com.zjdex.entity.param.NameCidParam;
-import com.zjdex.service.AbstractInputService;
 import com.zjdex.service.IdentityCheckService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +32,7 @@ public class IdentityCheckController {
     public String check(@RequestBody String pjson) {
 
         count.addAndGet(1);
-        System.out.println("--count->" + count);
+        LOGGER.info("--count->" + count);
 
         JSONObject json = JSON.parseObject(pjson);
 
@@ -49,9 +48,9 @@ public class IdentityCheckController {
         String en = null;
         try {
             en = DesEncrypter.encrypt(rest, "aaaaaaa");
-            System.out.println("--en-->" + en);
+            LOGGER.info("--en-->" + en);
             String de = DesEncrypter.decrypt(en, "aaaaaaa");
-            System.out.println("--de-->" + de);
+            LOGGER.info("--de-->" + de);
         } catch (Exception e) {
             LOGGER.error("error ..." + e.getMessage());
         }

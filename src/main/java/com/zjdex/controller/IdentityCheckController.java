@@ -7,6 +7,8 @@ import com.zjdex.entity.RecSjtNameCid;
 import com.zjdex.entity.param.NameCidParam;
 import com.zjdex.service.AbstractInputService;
 import com.zjdex.service.IdentityCheckService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @RestController
 public class IdentityCheckController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(IdentityCheckController.class);
 
     private AtomicInteger count = new AtomicInteger(0);
 
@@ -49,7 +53,7 @@ public class IdentityCheckController {
             String de = DesEncrypter.decrypt(en, "aaaaaaa");
             System.out.println("--de-->" + de);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("error ..." + e.getMessage());
         }
         return en;
     }
